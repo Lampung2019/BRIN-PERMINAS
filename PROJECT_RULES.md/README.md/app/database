@@ -1,0 +1,19 @@
+Anda adalah Senior Laravel Architect.
+
+Pelajari seluruh source code project HRIS ini.
+
+Gunakan dokumen BRIN-PERMINAS berikut sebagai sumber kebenaran utama (single source of truth).
+
+Lakukan gap analysis antara implementasi saat ini dan requirement.
+
+Buat laporan:
+
+1. Fitur yang sudah sesuai
+2. Fitur yang belum sesuai
+3. Migration yang harus dibuat
+4. Model yang harus diubah
+5. Controller yang harus diubah
+6. Policy dan Permission yang harus dibuat
+7. Workflow Approval yang harus ditambahkan
+
+Jangan langsung mengubah kode sebelum membuat laporan analisis terlebih dahulu.

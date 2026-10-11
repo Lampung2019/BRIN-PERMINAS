@@ -1,0 +1,392 @@
+<?php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+
+Route::get('/', function () {
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => false,
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
+Route::get('/careers', function () {
+    return Inertia::render('Careers/Index');
+})->name('careers');
+
+Route::get('/api/v1/recruitment/public/positions', [\App\Http\Controllers\Api\RecruitmentController::class, 'getPositions']);
+Route::post('/api/v1/recruitment/public/apply', [\App\Http\Controllers\Api\RecruitmentController::class, 'applyPublic']);
+
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/payroll', function () {
+    return Inertia::render('Payroll/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('payroll');
+
+Route::get('/payroll/{id}', function ($id) {
+    return Inertia::render('Payroll/Show', ['payroll_id' => $id]);
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('payroll.show');
+
+Route::get('/my-payslips', function () {
+    return Inertia::render('Payroll/MyPayslip');
+})->middleware(['auth', 'verified'])->name('my-payslips');
+
+Route::get('/employees', function () {
+    return Inertia::render('Employee/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('employees');
+
+Route::get('/attendances', function () {
+    return Inertia::render('Attendance/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('attendances');
+
+Route::get('/my-attendances', function () {
+    return Inertia::render('Attendance/MyAttendance');
+})
+->middleware(['auth', 'verified'])
+->name('my-attendances');
+
+Route::get('/salary-components', function () {
+    return Inertia::render('SalaryComponent/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('salary-components');
+
+Route::get('/settings', function () {
+    return Inertia::render('Settings');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('settings');
+
+// Employee & HR
+Route::get('/leaves', function () {
+    return Inertia::render('Leave/Index');
+})->middleware(['auth', 'verified'])->name('leaves');
+
+Route::get('/reimbursements', function () {
+    return Inertia::render('Reimbursement/Index');
+})->middleware(['auth', 'verified'])->name('reimbursements');
+
+Route::get('/overtimes', function () {
+    return Inertia::render('Overtime/Index');
+})->middleware(['auth', 'verified'])->name('overtimes');
+
+Route::get('/cash-advances', function () {
+    return Inertia::render('CashAdvance/Index');
+})->middleware(['auth', 'verified'])->name('cash-advances');
+
+Route::get('/holidays', function () {
+    return Inertia::render('Holiday/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('holidays');
+
+Route::get('/company-documents', function () {
+    return Inertia::render('CompanyDocument/Index');
+})->middleware(['auth', 'verified'])->name('company-documents');
+
+Route::get('/contract-compensations', function () {
+    return Inertia::render('ContractCompensation/Index');
+})->middleware(['auth', 'verified'])->name('contract-compensations');
+
+Route::get('/approval-workflows', function () {
+    return Inertia::render('ApprovalWorkflow/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('approval-workflows');
+
+Route::get('/recruitment', function () {
+    return Inertia::render('Recruitment/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('recruitment');
+
+Route::get('/okr', function () {
+    return Inertia::render('Okr/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('okr');
+
+Route::get('/assets', function () {
+    return Inertia::render('Asset/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('assets');
+
+Route::get('/loans', function () {
+    return Inertia::render('Loan/Index');
+})->middleware(['auth', 'verified'])->name('loans');
+
+Route::get('/performance-reviews', function () {
+    return Inertia::render('PerformanceReview/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('performance-reviews');
+
+Route::get('/org-chart', function () {
+    return Inertia::render('OrgChart/Index');
+})->middleware(['auth', 'verified'])->name('org-chart');
+
+Route::get('/announcements', function () {
+    return Inertia::render('Announcement/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('announcements');
+
+Route::get('/audit-logs', function () {
+    return Inertia::render('AuditLog/Index');
+})->middleware(['auth', 'verified', 'role:admin'])->name('audit-logs');
+
+Route::get('/work-schedules', function () {
+    return Inertia::render('WorkSchedule/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('work-schedules');
+
+Route::get('/work-schedules/roster', function () {
+    return Inertia::render('WorkSchedule/Roster');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('work-schedules.roster');
+
+Route::get('/reports', function () {
+    return Inertia::render('Report/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('reports');
+
+Route::get('/resignations', function () {
+    return Inertia::render('Resignation/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('resignations');
+
+Route::get('/warning-letters', function () {
+    return Inertia::render('WarningLetter/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('warning-letters');
+
+Route::get('/salary-simulator', function () {
+    return Inertia::render('SalarySimulator/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('salary-simulator');
+
+Route::get('/thrs', function () {
+    return Inertia::render('Thr/Index');
+})->middleware(['auth', 'verified'])->name('thrs');
+
+Route::get('/branches', function () {
+    return Inertia::render('Branch/Index');
+})->middleware(['auth', 'verified', 'role:admin,hr'])->name('branches');
+
+Route::get('/shift-exchanges', function () {
+    return Inertia::render('ShiftExchange/Index');
+})->middleware(['auth', 'verified'])->name('shift-exchanges');
+
+Route::get('/tax-reports', function () {
+    return Inertia::render('TaxReport/Index');
+})->middleware(['auth', 'verified'])->name('tax-reports');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// JSON API Routes for Frontend (Uses Web Middleware for Session Auth)
+Route::middleware('auth')->prefix('api/v1')->group(function () {
+    
+    // Admin & HR Only API
+    Route::middleware('role:admin,hr')->group(function () {
+        Route::get('/recruitment/positions', [\App\Http\Controllers\Api\RecruitmentController::class, 'getPositions']);
+        Route::post('/recruitment/positions', [\App\Http\Controllers\Api\RecruitmentController::class, 'storePosition']);
+        Route::get('/recruitment/applications', [\App\Http\Controllers\Api\RecruitmentController::class, 'getApplications']);
+        Route::put('/recruitment/applications/{id}/status', [\App\Http\Controllers\Api\RecruitmentController::class, 'updateApplicationStatus']);
+
+        Route::get('/okr', [\App\Http\Controllers\Api\OkrController::class, 'index']);
+        Route::post('/okr', [\App\Http\Controllers\Api\OkrController::class, 'storeObjective']);
+        Route::post('/okr/key-results', [\App\Http\Controllers\Api\OkrController::class, 'storeKeyResult']);
+        Route::put('/okr/key-results/{id}/progress', [\App\Http\Controllers\Api\OkrController::class, 'updateProgress']);
+
+        Route::get('/attendances/export', [\App\Http\Controllers\Api\AttendanceController::class, 'exportExcel']);
+        Route::get('/attendances', [\App\Http\Controllers\Api\AttendanceController::class, 'index']);
+        Route::post('/attendances', [\App\Http\Controllers\Api\AttendanceController::class, 'store']);
+        Route::get('/employees', [\App\Http\Controllers\Api\EmployeeController::class, 'index']);
+        Route::post('/employees', [\App\Http\Controllers\Api\EmployeeController::class, 'store']);
+        Route::put('/employees/{id}', [\App\Http\Controllers\Api\EmployeeController::class, 'update']);
+        Route::delete('/employees/{id}', [\App\Http\Controllers\Api\EmployeeController::class, 'destroy']);
+        
+        Route::get('/employees/{employeeId}/documents', [\App\Http\Controllers\Api\EmployeeDocumentController::class, 'index']);
+        Route::post('/employees/{employeeId}/documents', [\App\Http\Controllers\Api\EmployeeDocumentController::class, 'store']);
+        Route::delete('/documents/{id}', [\App\Http\Controllers\Api\EmployeeDocumentController::class, 'destroy']);
+        
+        Route::get('/payrolls/export', [\App\Http\Controllers\Api\PayrollController::class, 'exportCsv']);
+        Route::get('/payrolls/export/bank', [\App\Http\Controllers\Api\PayrollController::class, 'exportBankTransfer']);
+        Route::post('/payrolls/generate', [\App\Http\Controllers\Api\PayrollController::class, 'generate'])->middleware('throttle:payroll');
+        Route::post('/payrolls/{id}/approve', [\App\Http\Controllers\Api\PayrollController::class, 'approve']);
+        Route::post('/payrolls/{id}/lock', [\App\Http\Controllers\Api\PayrollController::class, 'lock']);
+        Route::post('/payrolls/{id}/disburse', [\App\Http\Controllers\Api\PayrollController::class, 'disburse']);
+        Route::get('/dashboard/stats', [\App\Http\Controllers\Api\DashboardController::class, 'stats']);
+        Route::get('/dashboard/approvals', [\App\Http\Controllers\Api\DashboardController::class, 'getApprovals']);
+
+        Route::get('/settings', [\App\Http\Controllers\Api\CompanySettingController::class, 'index']);
+        Route::post('/settings', [\App\Http\Controllers\Api\CompanySettingController::class, 'store']);
+        
+        Route::get('/salary-components', [\App\Http\Controllers\Api\SalaryComponentController::class, 'index']);
+        Route::post('/salary-components', [\App\Http\Controllers\Api\SalaryComponentController::class, 'store']);
+
+        // Work Schedule & Shift Roster
+        Route::get('/work-schedules', [\App\Http\Controllers\WorkScheduleController::class, 'index']);
+        Route::post('/work-schedules', [\App\Http\Controllers\WorkScheduleController::class, 'store']);
+        Route::get('/employee-shifts', [\App\Http\Controllers\WorkScheduleController::class, 'getShifts']);
+        Route::post('/employee-shifts', [\App\Http\Controllers\WorkScheduleController::class, 'assignShift']);
+        
+        Route::put('/leaves/{id}', [\App\Http\Controllers\Api\LeaveController::class, 'update']);
+        Route::put('/reimbursements/{id}', [\App\Http\Controllers\Api\ReimbursementController::class, 'update']);
+        Route::put('/overtimes/{id}', [\App\Http\Controllers\Api\OvertimeController::class, 'update']);
+        Route::put('/cash-advances/{id}', [\App\Http\Controllers\Api\CashAdvanceController::class, 'update']);
+        Route::delete('/cash-advances/{id}', [\App\Http\Controllers\Api\CashAdvanceController::class, 'destroy']);
+        
+        Route::get('/holidays', [\App\Http\Controllers\Api\HolidayController::class, 'index']);
+        Route::post('/holidays', [\App\Http\Controllers\Api\HolidayController::class, 'store']);
+        Route::delete('/holidays/{id}', [\App\Http\Controllers\Api\HolidayController::class, 'destroy']);
+
+        Route::post('/announcements', [\App\Http\Controllers\Api\AnnouncementController::class, 'store']);
+        Route::put('/announcements/{id}', [\App\Http\Controllers\Api\AnnouncementController::class, 'update']);
+        Route::put('/announcements/{id}/pin', [\App\Http\Controllers\Api\AnnouncementController::class, 'togglePin']);
+        Route::get('/announcements/{id}/stats', [\App\Http\Controllers\Api\AnnouncementController::class, 'readStats']);
+        Route::delete('/announcements/{id}', [\App\Http\Controllers\Api\AnnouncementController::class, 'destroy']);
+        
+        Route::post('/company-documents', [\App\Http\Controllers\CompanyDocumentController::class, 'store']);
+        Route::delete('/company-documents/{id}', [\App\Http\Controllers\CompanyDocumentController::class, 'destroy']);
+        
+        Route::post('/assets', [\App\Http\Controllers\AssetController::class, 'store']);
+        Route::put('/assets/{id}', [\App\Http\Controllers\AssetController::class, 'update']);
+        Route::delete('/assets/{id}', [\App\Http\Controllers\AssetController::class, 'destroy']);
+        
+        Route::get('/audit-logs', [\App\Http\Controllers\Api\AuditLogController::class, 'index']);
+
+        // Work Schedules (HR only)
+        Route::get('/work-schedules', [\App\Http\Controllers\WorkScheduleController::class, 'index']);
+        Route::post('/work-schedules', [\App\Http\Controllers\WorkScheduleController::class, 'store']);
+        Route::put('/work-schedules/{id}', [\App\Http\Controllers\WorkScheduleController::class, 'update']);
+        Route::delete('/work-schedules/{id}', [\App\Http\Controllers\WorkScheduleController::class, 'destroy']);
+        Route::post('/work-schedules/assign', [\App\Http\Controllers\WorkScheduleController::class, 'assignToEmployee']);
+
+        // Reports (HR only)
+        Route::get('/reports/attendance', [\App\Http\Controllers\ReportController::class, 'attendance']);
+        Route::get('/reports/payroll', [\App\Http\Controllers\ReportController::class, 'payroll']);
+        Route::get('/reports/leave', [\App\Http\Controllers\ReportController::class, 'leave']);
+        Route::get('/reports/overtime', [\App\Http\Controllers\ReportController::class, 'overtime']);
+        Route::get('/reports/kpi', [\App\Http\Controllers\ReportController::class, 'kpi']);
+
+        // Resignations & Offboarding
+        Route::get('/resignations', [\App\Http\Controllers\ResignationController::class, 'index']);
+        Route::post('/resignations', [\App\Http\Controllers\ResignationController::class, 'store']);
+        Route::put('/resignations/{id}', [\App\Http\Controllers\ResignationController::class, 'update']);
+
+        // Company Settings - signature upload
+        Route::post('/settings/signature', [\App\Http\Controllers\Api\CompanySettingController::class, 'uploadSignature']);
+
+        // Warning Letters (Admin & HR)
+        Route::post('/warning-letters', [\App\Http\Controllers\Api\WarningLetterController::class, 'store']);
+        Route::put('/warning-letters/{id}/revoke', [\App\Http\Controllers\Api\WarningLetterController::class, 'revoke']);
+
+        // Employee Bulk CSV Import
+        Route::post('/employees/import-csv', [\App\Http\Controllers\Api\EmployeeController::class, 'importCsv'])->middleware('throttle:import');
+
+        // THR (Tunjangan Hari Raya) - Admin & HR
+        Route::get('/thrs/preview', [\App\Http\Controllers\Api\ThrController::class, 'preview']);
+        Route::post('/thrs/generate', [\App\Http\Controllers\Api\ThrController::class, 'generate']);
+        Route::put('/thrs/{id}/approve', [\App\Http\Controllers\Api\ThrController::class, 'approve']);
+        Route::post('/thrs/bulk-approve', [\App\Http\Controllers\Api\ThrController::class, 'bulkApprove']);
+        Route::put('/thrs/{id}/disburse', [\App\Http\Controllers\Api\ThrController::class, 'disburse']);
+        Route::post('/thrs/bulk-disburse', [\App\Http\Controllers\Api\ThrController::class, 'bulkDisburse']);
+        Route::get('/thrs/export/bank', [\App\Http\Controllers\Api\ThrController::class, 'exportBankTransfer']);
+
+        // Branches (Kantor Cabang) - Admin & HR
+        Route::post('/branches', [\App\Http\Controllers\Api\BranchController::class, 'store']);
+        Route::get('/branches/{branch}', [\App\Http\Controllers\Api\BranchController::class, 'show']);
+        Route::put('/branches/{branch}', [\App\Http\Controllers\Api\BranchController::class, 'update']);
+        Route::delete('/branches/{branch}', [\App\Http\Controllers\Api\BranchController::class, 'destroy']);
+        Route::post('/branches/{branch}/assign', [\App\Http\Controllers\Api\BranchController::class, 'assignEmployees']);
+
+        // Tax Report 1721-A1 (Admin & HR)
+        Route::get('/tax-reports', [\App\Http\Controllers\Api\TaxReportController::class, 'index']);
+        Route::get('/tax-reports/{employee}/preview', [\App\Http\Controllers\Api\TaxReportController::class, 'preview'])->whereNumber('employee');
+        Route::get('/tax-reports/{employee}/pdf', [\App\Http\Controllers\Api\TaxReportController::class, 'downloadPdf'])->whereNumber('employee');
+
+        // Contract Compensations (PKWT PP 35/2021) - Admin & HR
+        Route::get('/contract-compensations/expiring', [\App\Http\Controllers\Api\ContractCompensationController::class, 'expiringContracts']);
+        Route::post('/contract-compensations/generate', [\App\Http\Controllers\Api\ContractCompensationController::class, 'generate']);
+        Route::put('/contract-compensations/{id}/approve', [\App\Http\Controllers\Api\ContractCompensationController::class, 'approve']);
+        Route::put('/contract-compensations/{id}/pay', [\App\Http\Controllers\Api\ContractCompensationController::class, 'markPaid']);
+
+        // Approval Workflows (Admin & HR)
+        Route::get('/approval-workflows', [\App\Http\Controllers\Api\ApprovalWorkflowController::class, 'index']);
+        Route::post('/approval-workflows', [\App\Http\Controllers\Api\ApprovalWorkflowController::class, 'store']);
+        Route::put('/approval-workflows/{id}', [\App\Http\Controllers\Api\ApprovalWorkflowController::class, 'update']);
+        Route::delete('/approval-workflows/{id}', [\App\Http\Controllers\Api\ApprovalWorkflowController::class, 'destroy']);
+        Route::post('/approval-workflows/preview', [\App\Http\Controllers\Api\ApprovalWorkflowController::class, 'preview']);
+    });
+    
+    // Shared API
+    Route::middleware('auth')->group(function () {
+        // Contract Compensations (PKWT)
+        Route::get('/contract-compensations', [\App\Http\Controllers\Api\ContractCompensationController::class, 'index']);
+        Route::get('/contract-compensations/{id}/slip-pdf', [\App\Http\Controllers\Api\ContractCompensationController::class, 'downloadSlipPdf']);
+
+        // Tax Report 1721-A1 (Self-Service)
+        Route::get('/tax-reports/my', [\App\Http\Controllers\Api\TaxReportController::class, 'myTaxReport']);
+        Route::get('/tax-reports/my/pdf', [\App\Http\Controllers\Api\TaxReportController::class, 'myTaxReportPdf']);
+
+        Route::get('/branches', [\App\Http\Controllers\Api\BranchController::class, 'index']);
+        Route::get('/thrs', [\App\Http\Controllers\Api\ThrController::class, 'index']);
+        Route::get('/thrs/{id}/slip-pdf', [\App\Http\Controllers\Api\ThrController::class, 'downloadSlipPdf']);
+
+        // Shift Exchange API
+        Route::get('/shift-exchanges', [\App\Http\Controllers\Api\ShiftExchangeController::class, 'index']);
+        Route::get('/shift-exchanges/available-shifts', [\App\Http\Controllers\Api\ShiftExchangeController::class, 'availableShifts']);
+        Route::post('/shift-exchanges', [\App\Http\Controllers\Api\ShiftExchangeController::class, 'store']);
+        Route::put('/shift-exchanges/{shiftExchange}/peer-respond', [\App\Http\Controllers\Api\ShiftExchangeController::class, 'peerRespond']);
+        Route::put('/shift-exchanges/{shiftExchange}/manager-approve', [\App\Http\Controllers\Api\ShiftExchangeController::class, 'managerApprove']);
+        Route::put('/shift-exchanges/{shiftExchange}/cancel', [\App\Http\Controllers\Api\ShiftExchangeController::class, 'cancel']);
+
+        Route::get('/employees', [\App\Http\Controllers\Api\EmployeeController::class, 'index']);
+        Route::get('/announcements', [\App\Http\Controllers\Api\AnnouncementController::class, 'index']);
+        Route::post('/announcements/{id}/read', [\App\Http\Controllers\Api\AnnouncementController::class, 'markAsRead']);
+        
+        // Notifications
+        Route::get('/notifications', [\App\Http\Controllers\Api\NotificationController::class, 'index']);
+        Route::put('/notifications/mark-all-read', [\App\Http\Controllers\Api\NotificationController::class, 'markAllAsRead']);
+        Route::put('/notifications/{id}/mark-read', [\App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
+        
+        Route::get('/company-documents', [\App\Http\Controllers\CompanyDocumentController::class, 'index']);
+        Route::get('/assets', [\App\Http\Controllers\AssetController::class, 'index']);
+
+        // Cash advances (all roles)
+        Route::get('/cash-advances', [\App\Http\Controllers\Api\CashAdvanceController::class, 'index']);
+        Route::post('/cash-advances', [\App\Http\Controllers\Api\CashAdvanceController::class, 'store']);
+
+        // Loans (all roles)
+        Route::get('/loans', [\App\Http\Controllers\LoanController::class, 'index']);
+        Route::post('/loans', [\App\Http\Controllers\LoanController::class, 'store']);
+
+        // Payrolls (Employee self-payslip & Admin overview - controller handles role filtering)
+        Route::get('/payrolls', [\App\Http\Controllers\Api\PayrollController::class, 'index']);
+
+        Route::get('/my-attendances',
+            [\App\Http\Controllers\Api\AttendanceController::class,
+            'myAttendances']);
+
+        // Performance reviews (all roles - index only)
+        Route::get('/performance-reviews', [\App\Http\Controllers\PerformanceReviewController::class, 'index']);
+    });
+
+    Route::put('/loans/{id}/status', [\App\Http\Controllers\LoanController::class, 'updateStatus'])->middleware('role:admin,hr');
+    Route::post('/performance-reviews', [\App\Http\Controllers\PerformanceReviewController::class, 'store'])->middleware('role:admin,hr');
+    Route::get('/org-chart', [\App\Http\Controllers\OrgChartController::class, 'index']);
+    Route::put('/org-chart/{id}', [\App\Http\Controllers\OrgChartController::class, 'update'])->middleware('role:admin,hr');
+    
+    Route::get('/dashboard/stats', [\App\Http\Controllers\Api\DashboardController::class, 'stats'])->withoutMiddleware('role:admin,hr');
+    Route::get('/leaves', [\App\Http\Controllers\Api\LeaveController::class, 'index']);
+    Route::post('/leaves', [\App\Http\Controllers\Api\LeaveController::class, 'store']);
+    Route::get('/reimbursements', [\App\Http\Controllers\Api\ReimbursementController::class, 'index']);
+    Route::post('/reimbursements', [\App\Http\Controllers\Api\ReimbursementController::class, 'store']);
+    Route::get('/overtimes', [\App\Http\Controllers\Api\OvertimeController::class, 'index']);
+    Route::post('/overtimes', [\App\Http\Controllers\Api\OvertimeController::class, 'store']);
+    Route::post('/overtimes/calculate', [\App\Http\Controllers\Api\OvertimeController::class, 'calculate']);
+    
+    Route::post('/attendances/clock-in', [\App\Http\Controllers\Api\AttendanceController::class, 'clockIn'])->middleware('throttle:attendance');
+    Route::post('/attendances/clock-out', [\App\Http\Controllers\Api\AttendanceController::class, 'clockOut'])->middleware('throttle:attendance');
+    
+    Route::get('/payrolls/{id}', [\App\Http\Controllers\Api\PayrollController::class, 'show']);
+    Route::get('/payrolls/{id}/slip', [\App\Http\Controllers\Api\PayrollController::class, 'downloadSlip']);
+
+    // Warning Letters & Certificates
+    Route::get('/warning-letters', [\App\Http\Controllers\Api\WarningLetterController::class, 'index']);
+    Route::get('/warning-letters/{id}/download-pdf', [\App\Http\Controllers\Api\WarningLetterController::class, 'downloadPdf']);
+    Route::get('/employees/{id}/paklaring', [\App\Http\Controllers\Api\CertificateController::class, 'downloadPaklaring']);
+    Route::get('/employees/{id}/active-letter', [\App\Http\Controllers\Api\CertificateController::class, 'downloadActiveLetter']);
+    Route::get('/leaves/calendar', [\App\Http\Controllers\Api\LeaveController::class, 'calendar']);
+    Route::get('/employees/template/download', [\App\Http\Controllers\Api\EmployeeController::class, 'downloadTemplate']);
+});
+
+require __DIR__.'/auth.php';
